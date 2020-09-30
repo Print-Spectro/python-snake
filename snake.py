@@ -143,9 +143,10 @@ def rungame():
         clear()   
         printgame(board.board)
         print("Score: " + str(counter))
-        sleep(0.6)
-        if keypress() in "WASD":
+        for i in range(6):
+          if keypress() in "WASD":
             a = keypress()
+          sleep(0.1)
 
         if a.upper() == "X":
             ...
