@@ -1,5 +1,5 @@
 # python-snake
-I made terminal snake in python.
+I made terminal snake in python controls: WASD.
 Modules used = [
 time
 os
