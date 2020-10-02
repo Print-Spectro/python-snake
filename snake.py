@@ -7,10 +7,13 @@ Created on Mon Sep 28 20:35:23 2020
 from time import sleep 
 
 from os import system
-
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 from random import randint
 
 import keyboard
+
+from sys import exit
 
 def clear(): 
   system("cls")
@@ -50,9 +53,8 @@ def keypress():
 
 
 class Snake:
-    snake = [[0, 4, "D"],[1,4, "D"],[2,4, "D"],[3,4, "D"]]
     def __init__ (self):
-        ...
+        self.snake = [[0, 4, "D"],[1,4, "D"],[2,4, "D"],[3,4, "D"]]
     def extend(self, direction):
         if direction.upper() == "W":
             self.snake.append([self.snake[-1][0], self.snake[-1][1] - 1, "W"])
@@ -126,10 +128,14 @@ def move_snake(snake, board):
 Insert snake, Insert apple, , print board, extend snake, test if snake eats apple if yes, extend, if no, , insert snake, insert apple
 if snake ate an apple, counter +=1
 """        
-def rungame():     
+def rungame():
+        
     board = Board(10)
     snake = Snake()
+   
     board.snakein(snake)
+    clear()   
+    printgame(board.board)
     
     
        
@@ -137,16 +143,18 @@ def rungame():
     b = "False"
     counter = -1
     while a.upper() != "X":
+        
         if b:
             board.applein()
             counter += 1
+        
         clear()   
         printgame(board.board)
         print("Score: " + str(counter))
         for i in range(6):
           if keypress() in "WASD":
             a = keypress()
-          sleep(0.1)
+          sleep(0.03)
 
         if a.upper() == "X":
             ...
@@ -158,15 +166,37 @@ def rungame():
             dead, b = move_snake(snake, board)
             if dead:
                 print("You Lose" + "\n" + "Score " + str(counter))
+                file = open("Highscores.txt", "a")
+                file.close()
+                file = open("Highscores.txt")
+                filelist = [int(i) for i in file]
+                file.close()
+                if len(filelist) == 0:
+                    file = open("Highscores.txt", "a")
+                    
+                    print("New High Score!")
+                    file.write(str(counter) + "\n")
+                    file.close()
+                elif counter > filelist[-1]:
+                    file = open("Highscores.txt", "a")
+                    
+                    print("New High Score!")
+                    file.write(str(counter)  + "\n")
+                    file.close()
+                file.close()
                 if input("Press Enter to Play Again, X to exit ").upper() == "X":
-                    return
-                rungame()
+                    exit()
+                    
+                else:
+                    
+                    rungame()
+                    
             if keypress() in "WASD":
                  a = keypress()    
             board.snakein(snake)
-            
-rungame()
-           
+rungame()            
+
+
 
 
 
